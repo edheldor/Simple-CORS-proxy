@@ -6,15 +6,23 @@ const PORT = 3000; // Порт вашего прокси-сервера
 const TARGET_URL = 'https://example.com'; // URL удаленного сервера
 
 
-// Обработка запросов OPTIONS
-app.options('*', (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.sendStatus(204); // No Content
+app.use('*', (req, res, next) => {
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    console.log(`Received request: ${req.method} ${fullUrl}`);
+    next();
 });
 
-// Создаем прокси middleware один раз
+
+app.use('/', (req, res, next) => {
+    // Прокси только если метод не OPTIONS
+    if (req.method !== 'OPTIONS') {
+        proxy(req, res, next); // Вызываем прокси middleware
+    } else {
+        next(); // Если метод OPTIONS, просто передаем управление дальше
+    }
+});
+
+// Создаем прокси middleware
 const proxy = createProxyMiddleware({
     target: TARGET_URL,
     changeOrigin: true,
@@ -32,20 +40,14 @@ const proxy = createProxyMiddleware({
 
 });
 
-// Настраиваем прокси
-app.use('/', (req, res, next) => {
-    // Логируем информацию о запросе перед проксированием
-    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-    console.log(`Received request: ${req.method} ${fullUrl}`);
-
-    // Прокси только если метод не OPTIONS
-    if (req.method !== 'OPTIONS') {
-        proxy(req, res, next); // Вызываем прокси middleware
-    } else {
-        console.log('options')
-        next(); // Если метод OPTIONS, просто передаем управление дальше
-    }
+// Обработка запросов OPTIONS
+app.options('*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.sendStatus(204); // No Content
 });
+
 
 app.listen(PORT, () => {
     console.log(`Proxy server is running on port ${PORT}`);
