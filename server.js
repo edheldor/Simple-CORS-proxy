@@ -1,5 +1,5 @@
 const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const {createProxyMiddleware} = require('http-proxy-middleware');
 const cors = require('cors');
 
 const app = express();
@@ -21,17 +21,20 @@ app.options('*', (req, res) => {
 const proxy = createProxyMiddleware({
     target: TARGET_URL,
     changeOrigin: true,
-    onProxyReq: (proxyReq, req, res) => {
-        // Логируем информацию о проксируемом запросе
-        console.log(`Proxying request to: ${TARGET_URL}${req.url}`);
-        console.log('Request Method:', req.method);
-        console.log('Request Headers:', req.headers);
-    },
-    onProxyRes: (proxyRes, req, res) => {
-        // Здесь можно модифицировать ответ от удаленного сервера
-        // Например, добавляем CORS заголовки
-        proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    },
+    on: {
+        proxyReq: (proxyReq, req, res) => {
+            // Логируем информацию о проксируемом запросе
+            console.log(`Proxying request to: ${TARGET_URL}${req.url}`);
+            console.log('Request Method:', req.method);
+            console.log('Request Headers:', req.headers);
+        },
+        proxyRes: (proxyRes, req, res) => {
+            // Здесь можно модифицировать ответ от удаленного сервера
+            // Например, добавляем CORS заголовки
+            proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+        },
+    }
+
 });
 
 // Настраиваем прокси
