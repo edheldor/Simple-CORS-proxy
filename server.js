@@ -1,6 +1,5 @@
 const express = require('express');
 const {createProxyMiddleware} = require('http-proxy-middleware');
-const cors = require('cors');
 
 const app = express();
 const PORT = 3000; // Порт вашего прокси-сервера
@@ -22,9 +21,7 @@ const proxy = createProxyMiddleware({
     on: {
         proxyReq: (proxyReq, req, res) => {
             // Логируем информацию о проксируемом запросе
-            console.log(`Proxying request to: ${TARGET_URL}${req.url}`);
-            console.log('Request Method:', req.method);
-            console.log('Request Headers:', req.headers);
+            console.log(`Proxying request to: ${req.method} ${TARGET_URL}${req.url}`);
         },
         proxyRes: (proxyRes, req, res) => {
             // Здесь можно модифицировать ответ от удаленного сервера
@@ -38,7 +35,8 @@ const proxy = createProxyMiddleware({
 // Настраиваем прокси
 app.use('/', (req, res, next) => {
     // Логируем информацию о запросе перед проксированием
-    console.log(`Received request: ${req.method} ${req.url}`);
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    console.log(`Received request: ${req.method} ${fullUrl}`);
 
     // Прокси только если метод не OPTIONS
     if (req.method !== 'OPTIONS') {
