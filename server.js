@@ -6,8 +6,6 @@ const app = express();
 const PORT = 3000; // Порт вашего прокси-сервера
 const TARGET_URL = 'https://example.com'; // URL удаленного сервера
 
-// // Включаем CORS
-// app.use(cors());
 
 // Обработка запросов OPTIONS
 app.options('*', (req, res) => {
