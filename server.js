@@ -42,10 +42,11 @@ app.use('/', (req, res, next) => {
     if (req.method !== 'OPTIONS') {
         proxy(req, res, next); // Вызываем прокси middleware
     } else {
+        console.log('options')
         next(); // Если метод OPTIONS, просто передаем управление дальше
     }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Proxy server is running on http://localhost:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`Proxy server is running on port ${PORT}`);
 });
