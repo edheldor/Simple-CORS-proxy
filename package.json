@@ -2,8 +2,10 @@
   "name": "cors",
   "version": "1.0.0",
   "main": "index.js",
+  "bin": "server.js",
   "scripts": {
-    "run": "node server.js"
+    "run": "node server.js",
+    "build": "pkg . --out-path dist/"
   },
   "keywords": [],
   "author": "Edheldor",
@@ -12,5 +14,9 @@
   "dependencies": {
     "express": "^4.21.2",
     "http-proxy-middleware": "^3.0.3"
+  },
+    "pkg": {
+    "targets": ["node18-linux-x64", "node18-win-x64", "node18-macos-x64"],
+    "outputPath": "dist"
   }
 }
