@@ -4,7 +4,7 @@ const signale = require('signale');
 
 const app = express();
 const PORT = 3000; // Порт вашего прокси-сервера
-const TARGET_URL = 'https://example.com'; // URL удаленного сервера
+const TARGET_URL = process.env.TARGET_URL ?? 'https://example.com'; // URL удаленного сервера
 
 app.use('*', (req, res, next) => {
   // логгируем все входящие запросы
@@ -49,4 +49,5 @@ app.options('/', (req, res) => {
 
 app.listen(PORT, () => {
    signale.start(`Proxy server is running on port ${PORT}`);
+   signale.success(`Target server address is ${TARGET_URL}`)
 });

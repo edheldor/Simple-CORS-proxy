@@ -1,5 +1,5 @@
 {
-  "name": "Simple cors proxy",
+  "name": "simpleCorsProxy",
   "version": "0.1.0",
   "main": "index.js",
   "bin": "server.js",
