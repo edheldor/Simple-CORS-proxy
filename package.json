@@ -8,7 +8,9 @@
     "build": "pkg . --out-path dist/",
     "build:win": "pkg . --targets node18-win-x64 --out-path dist/",
     "build:linux": "pkg . --targets node18-linux-x64 --out-path dist/",
-    "build:mac": "pkg . --targets node18-macos-x64 --out-path dist/"
+    "build:mac": "pkg . --targets node18-macos-x64 --out-path dist/",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "Edheldor",
@@ -19,9 +21,10 @@
     "http-proxy-middleware": "^3.0.3"
   },
   "devDependencies": {
-    "pkg": "^5.8.1"
+    "pkg": "^5.8.1",
+    "prettier": "^3.5.3"
   },
-    "pkg": {
+  "pkg": {
     "targets": [
       "node18-linux-x64",
       "node18-win-x64",
