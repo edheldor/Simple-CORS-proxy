@@ -1,7 +1,6 @@
 {
   "name": "simpleCorsProxy",
   "version": "0.1.0",
-  "main": "index.js",
   "bin": "server.js",
   "scripts": {
     "run": "node server.js",
