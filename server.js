@@ -3,7 +3,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const signale = require('signale');
 
 const app = express();
-const PORT = 3000; // Порт вашего прокси-сервера
+const PORT = process.env.PORT ?? 3000; // Порт вашего прокси-сервера
 const TARGET_URL = process.env.TARGET_URL ?? 'https://example.com'; // URL удаленного сервера
 
 app.use('*', (req, res, next) => {
