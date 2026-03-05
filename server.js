@@ -74,12 +74,14 @@ const app = express();
 
 // Порт, на котором поднимается локальный прокси‑сервер.
 // Приоритет: CLI‑аргумент -> переменная окружения PORT -> значение по умолчанию.
-const PORT = cliArgs.port ?? (process.env.PORT ? Number(process.env.PORT) : 3000);
+const PORT =
+  cliArgs.port ?? (process.env.PORT ? Number(process.env.PORT) : 3000);
 
 // Базовый адрес целевого (удалённого) сервера, на который будут уходить запросы.
 // Приоритет: CLI‑аргумент -> переменная окружения TARGET_URL -> значение по умолчанию.
 // Обязательно указывать протокол (http / https).
-const TARGET_URL = cliArgs.target ?? process.env.TARGET_URL ?? 'https://example.com';
+const TARGET_URL =
+  cliArgs.target ?? process.env.TARGET_URL ?? 'https://example.com';
 
 // Глобальный логгер всех входящих запросов в прокси.
 app.use('*', (req, res, next) => {
@@ -107,7 +109,9 @@ const proxy = createProxyMiddleware({
   on: {
     proxyReq: (proxyReq, req, res) => {
       // Логируем конечный адрес и метод запроса, который уходит на удалённый сервер.
-      signale.success(`Proxying request to: ${req.method} ${TARGET_URL}${req.url}`);
+      signale.success(
+        `Proxying request to: ${req.method} ${TARGET_URL}${req.url}`
+      );
     },
     proxyRes: (proxyRes, req, res) => {
       // На этом этапе ответ уже пришёл от удалённого сервера,
