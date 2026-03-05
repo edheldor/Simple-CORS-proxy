@@ -35,7 +35,7 @@ npm install
 ### Установка как глобальная npm‑утилита
 
 ```bash
-npm install -g simple-cors-proxy
+npm install -g @edheldor/simple-cors-proxy
 ```
 
 После этого команда `simple-cors-proxy` будет доступна глобально.
@@ -175,7 +175,7 @@ PORT=5000 TARGET_URL=https://api.example.com npm run run
 После установки:
 
 ```bash
-npm install -g simple-cors-proxy
+npm install -g @edheldor/simple-cors-proxy
 ```
 
 Команда `simple-cors-proxy` будет доступна из любого места.
