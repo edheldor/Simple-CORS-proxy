@@ -4,6 +4,10 @@
   "bin": {
     "simple-cors-proxy": "server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edheldor/Simple-CORS-proxy.git"
+  },
   "scripts": {
     "run": "node server.js",
     "run:example": "node server.js --port 4000 --target https://api.example.com",
