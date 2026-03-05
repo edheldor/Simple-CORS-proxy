@@ -6,7 +6,9 @@
   },
   "scripts": {
     "run": "node server.js",
+    "run:example": "node server.js --port 4000 --target https://api.example.com",
     "dev": "nodemon server.js",
+    "dev:example": "nodemon server.js --port 4000 --target https://api.example.com",
     "volta:install": "volta install",
     "build": "pkg . --out-path dist/",
     "build:win": "pkg . --targets node18-win-x64 --out-path dist/",

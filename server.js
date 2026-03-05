@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Простой CORS‑прокси на базе Express.
  *
@@ -9,15 +11,75 @@ const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const signale = require('signale');
 
+function showHelp() {
+  // Небольшая помощь по CLI‑флагам.
+  // Вызывается при передаче --help или -h.
+  // eslint-disable-next-line no-console
+  console.log(`
+Simple CORS Proxy
+
+Запуск:
+  simple-cors-proxy --port 4000 --target https://api.example.com
+
+Параметры:
+  -p, --port    Порт локального прокси-сервера (по умолчанию 3000)
+  -t, --target  Целевой URL, на который проксируются запросы
+  -h, --help    Показать эту справку
+
+Также можно использовать переменные окружения:
+  PORT, TARGET_URL
+`);
+}
+
+function parseCliArgs(argv) {
+  const result = {};
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+
+    if (arg === '--help' || arg === '-h') {
+      showHelp();
+      process.exit(0);
+    }
+
+    if (arg === '--port' || arg === '-p') {
+      const value = argv[i + 1];
+      if (value) {
+        const parsed = Number(value);
+        if (Number.isNaN(parsed)) {
+          signale.error(`Invalid port value: "${value}"`);
+          process.exit(1);
+        }
+        result.port = parsed;
+        i += 1;
+      }
+      continue;
+    }
+
+    if (arg === '--target' || arg === '-t') {
+      const value = argv[i + 1];
+      if (value) {
+        result.target = value;
+        i += 1;
+      }
+    }
+  }
+
+  return result;
+}
+
+const cliArgs = parseCliArgs(process.argv.slice(2));
+
 const app = express();
 
 // Порт, на котором поднимается локальный прокси‑сервер.
-// Можно переопределить через переменную окружения PORT.
-const PORT = process.env.PORT ?? 3000;
+// Приоритет: CLI‑аргумент -> переменная окружения PORT -> значение по умолчанию.
+const PORT = cliArgs.port ?? (process.env.PORT ? Number(process.env.PORT) : 3000);
 
 // Базовый адрес целевого (удалённого) сервера, на который будут уходить запросы.
+// Приоритет: CLI‑аргумент -> переменная окружения TARGET_URL -> значение по умолчанию.
 // Обязательно указывать протокол (http / https).
-const TARGET_URL = process.env.TARGET_URL ?? 'https://example.com';
+const TARGET_URL = cliArgs.target ?? process.env.TARGET_URL ?? 'https://example.com';
 
 // Глобальный логгер всех входящих запросов в прокси.
 app.use('*', (req, res, next) => {
