@@ -1,5 +1,5 @@
 {
-  "name": "simple-cors-proxy",
+  "name": "@edheldor/simple-cors-proxy",
   "version": "0.1.0",
   "bin": {
     "simple-cors-proxy": "server.js"
