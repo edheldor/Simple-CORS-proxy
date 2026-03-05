@@ -1,7 +1,9 @@
 {
-  "name": "simpleCorsProxy",
+  "name": "simple-cors-proxy",
   "version": "0.1.0",
-  "bin": "server.js",
+  "bin": {
+    "simple-cors-proxy": "server.js"
+  },
   "scripts": {
     "run": "node server.js",
     "dev": "nodemon server.js",
